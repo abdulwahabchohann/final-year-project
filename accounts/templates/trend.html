@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadWise - Trending Books</title>
+
+  <!-- Local CSS using Django static -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <h1>ReadWise</h1>
+      </div>
+      <div class="search-container">
+        <form id="search-form">
+          <input type="text" id="search-input" placeholder="Search by title, author, or ISBN...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+      <div class="nav-links">
+        <a href="{% url 'home' %}" class="active">Home</a>
+        <a href="{% url 'categories' %}">Categories</a>
+        <a href="{% url 'trending' %}">Trending</a>
+        <a href="{% url 'personalize' %}">For You</a>
+        <a href="{% url 'login' %}" class="auth-btn signup">Sign Up/Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="trending-books">
+      <div class="section-header">
+        <h2>Top Trending Books</h2>
+        <a href="{% url 'trending' %}" class="view-all">View All</a>
+      </div>
+      <div class="book-carousel" id="trending-carousel">
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="{% static 'images/book1.jpg' %}" alt="The Silent Patient">
+          </div>
+          <div class="book-info">
+            <h3>The Silent Patient</h3>
+            <p class="author">Alex Michaelides</p>
+            <div class="rating">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i><span>4.5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="{% static 'images/book2.jpg' %}" alt="Atomic Habits">
+          </div>
+          <div class="book-info">
+            <h3>Atomic Habits</h3>
+            <p class="author">James Clear</p>
+            <div class="rating">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><span>4.8</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeat more books similarly -->
+      </div>
+
+      <div class="carousel-controls">
+        <button class="prev-btn" data-target="trending-carousel"><i class="fas fa-chevron-left"></i></button>
+        <button class="next-btn" data-target="trending-carousel"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>ReadWise</h3>
+        <p>Discover books that resonate with your interests and emotions.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'categories' %}">Categories</a></li>
+          <li><a href="{% url 'trending' %}">Trending Books</a></li>
+          <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Help & Support</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>Email: info@readwise.com</p>
+        <p>Phone: +1 123-456-7890</p>
+        <p>Address: COMSATS University, Vehari Campus</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 ReadWise. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Categories - ReadWise</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>ReadWise</h1>
+            </div>
+            <div class="search-container">
+                <form id="search-form">
+                    <input type="text" id="search-input" placeholder="Search by title, author, or ISBN...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'categories' %}" class="active">Categories</a>
+                <a href="{% url 'trending' %}">Trending</a>
+                <a href="{% url 'personalize' %}">For You</a>
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profile</a>
+                    <span class="user-greeting">Hello, {{ user.username }}!</span>
+                    <a href="{% url 'logout' %}" class="auth-btn logout">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="auth-btn signup">Sign Up/Login</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                    <button class="close-alert" onclick="this.parentElement.remove()">×</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main>
+        <section class="categories">
+            <div class="section-header">
+                <h2>Browse by Categories</h2>
+                <p>Explore a wide range of genres and find your next favorite read.</p>
+            </div>
+            <div class="category-grid">
+                <div class="category-card fiction">
+                    <div class="category-overlay"></div>
+                    <h3>Fiction</h3>
+                </div>
+                <div class="category-card self-help">
+                    <div class="category-overlay"></div>
+                    <h3>Self-Help</h3>
+                </div>
+                <div class="category-card business">
+                    <div class="category-overlay"></div>
+                    <h3>Religious</h3>
+                </div>
+                <div class="category-card health">
+                    <div class="category-overlay"></div>
+                    <h3>Health & Wellness</h3>
+                </div>
+                <div class="category-card science">
+                    <div class="category-overlay"></div>
+                    <h3>Science & Technology</h3>
+                </div>
+                <div class="category-card history">
+                    <div class="category-overlay"></div>
+                    <h3>History</h3>
+                </div>
+                <div class="category-card romance" style="background-color: #e84393;">
+                    <div class="category-overlay"></div>
+                    <h3>Business & Economics</h3>
+                </div>
+                <div class="category-card biography" style="background-color: #fdcb6e;">
+                    <div class="category-overlay"></div>
+                    <h3>Biographies</h3>
+                </div>
+                <div class="category-card mystery" style="background-color: #2d3436;">
+                    <div class="category-overlay"></div>
+                    <h3>Mystery & Thriller</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ReadWise</h3>
+                <p>Discover books that resonate with your interests and emotions.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'categories' %}">Categories</a></li>
+                    <li><a href="{% url 'trending' %}">Trending Books</a></li>
+                    <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@readwise.com</p>
+                <p>Phone: +1 123-456-7890</p>
+                <p>Address: COMSATS University, Vehari Campus</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ReadWise. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
