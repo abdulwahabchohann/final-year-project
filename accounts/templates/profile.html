@@ -8,37 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">
-                <h1>ReadWise</h1>
-            </div>
-            <div class="search-container">
-                <form id="search-form">
-                    <input type="text" id="search-input" placeholder="Search by title, author, or ISBN...">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-            <div class="nav-links">
-                <a href="{% url 'home' %}">Home</a>
-                <a href="{% url 'categories' %}">Categories</a>
-                <a href="{% url 'trending' %}">Trending</a>
-                <a href="{% url 'personalize' %}">For You</a>
-                
-                {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}" class="active">Profile</a>
-                    <span class="user-greeting">Hello, {{ user.username }}!</span>
-                    <a href="{% url 'logout' %}" class="auth-btn logout">Logout</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="auth-btn signup">Sign Up/Login</a>
-                {% endif %}
-            </div>
-        </nav>
-    </header>
-
     <!-- Messages -->
     {% if messages %}
         <div class="messages-container">

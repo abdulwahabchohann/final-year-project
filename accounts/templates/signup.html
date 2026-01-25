@@ -2,64 +2,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - ReadWise</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sign Up - ReadWise</title>
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}"/>
 </head>
 <body>
-    <div class="login-wrapper">
-        <div class="login-card">
-            <div class="logo">
-                <h2>ReadWise</h2>
-            </div>
-            <form id="signup-form" class="login-form">
-                <div class="form-group">
-                    <input type="text" 
-                           id="name" 
-                           placeholder="Full Name" 
-                           required
-                           minlength="2"
-                           aria-label="Full Name">
-                </div>
-                <div class="form-group">
-                    <input type="email" 
-                           id="email" 
-                           placeholder="Email Address" 
-                           required
-                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                           aria-label="Email Address">
-                <div class="form-group password-group">
-    <input type="password" 
-           id="password" 
-           placeholder="Password" 
-           required
-           minlength="8"
-           aria-label="Password">
-    <i class="fa fa-eye toggle-password" toggle="#password"></i>
-</div>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="logo">
+        <h2>Create your account</h2>
+      </div>
 
-    <div class="form-group password-group">
-    <input type="password" 
-           id="confirm-password" 
-           placeholder="Confirm Password"
-           required
-           minlength="8"
-           aria-label="Confirm Password">
-    <i class="fa fa-eye toggle-password" toggle="#confirm-password"></i>
-</div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
 
-                <button type="submit" class="login-btn">
-                    <span class="btn-text">Sign Up</span>
-                    <span class="loading-spinner"></span>
-                </button>
-                <p class="login-link">
-                    Already have an account? <a href="login.html">Login</a>
-                </p>
-            </form>
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}{{ error }}{% endfor %}
         </div>
+      {% endif %}
+
+      <form id="signup-form" class="login-form" method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <input type="text" id="username" name="username"
+                 value="{{ form.username.value|default:'' }}"
+                 placeholder="Username" required minlength="2" aria-label="Username"/>
+          {% if form.username.errors %}
+            <div class="alert alert-danger">{% for e in form.username.errors %}{{ e }}{% endfor %}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <input type="email" id="email" name="email"
+                 value="{{ form.email.value|default:'' }}"
+                 placeholder="Email Address" required aria-label="Email Address"/>
+          {% if form.email.errors %}
+            <div class="alert alert-danger">{% for e in form.email.errors %}{{ e }}{% endfor %}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <input type="password" id="password" name="password"
+                 placeholder="Password" required minlength="8" aria-label="Password"/>
+        </div>
+
+        <div class="form-group">
+          <input type="password" id="confirm-password" name="confirm_password"
+                 placeholder="Confirm Password" required minlength="8" aria-label="Confirm Password"/>
+        </div>
+
+        <div class="password-requirements">
+          <ul>
+            <li>At least 8 characters</li>
+            <li>Use a mix of letters and numbers</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="login-btn"><span class="btn-text">Sign Up</span></button>
+
+        <p class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+      </form>
     </div>
-    <script src="signup.js" type="module"></script>
+  </div>
 </body>
 </html>

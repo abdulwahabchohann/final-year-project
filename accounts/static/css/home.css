@@ -1,0 +1,280 @@
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 5%;
+    min-height: 85vh;         /* full landing height */
+    width: 100%;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+.hero-content h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+.hero-content p {
+    font-size: 1.15rem;
+    color: var(--light-text);
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 430px;   /* perfect size for landing hero illustration */
+    height: auto;
+    object-fit: cover;
+}
+
+.trending-books {
+    margin: 60px auto;
+    padding: 0 5%;
+    max-width: 1400px;
+}
+
+/* Header: title + view all link */
+.trending-books .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 24px;
+}
+.trending-books h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2b2b3c;
+}
+.trending-books .section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2f2f44;
+    margin-bottom: 4px;
+}
+.trending-books .section-caption {
+    font-size: 0.95rem;
+    color: #6d6c8a;
+}
+/* View all link */
+.trending-books .view-all {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    transition: .2s ease;
+}
+.trending-books .view-all:hover {
+    text-decoration: underline;
+    color: #564cff;
+}
+/* ============================================
+   BOOK CAROUSEL
+============================================ */
+
+/* Horizontal scroll container */
+.book-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 24px;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+}
+
+.book-carousel .book-card {
+    flex: 0 0 240px;
+}
+ /* Hide scrollbars for clean look */
+.book-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+.book-carousel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 768px) {
+    .book-carousel .book-card {
+        flex: 0 0 200px;
+    }
+    .trending-books .section-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+}
+.trending-books {
+    margin-bottom: 40px !important;
+}
+
+
+/* Categories page hero + module */
+/* ================================================
+   CATEGORIES SECTION
+================================================ */
+.categories {
+    margin-top: 0 !important;
+}
+
+.categories {
+    margin: 70px auto;
+    padding: 0 5%;
+    max-width: 1400px;
+}
+
+/* Header */
+.home-categories .section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2f2f44;
+}
+
+.home-categories .section-caption {
+    font-size: 0.95rem;
+    color: #6d6c8a;
+}
+
+/* ================================================
+   CATEGORY GRID
+================================================ */
+
+.home-category-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 2fr));
+    gap: 26px;
+}
+
+/* Category Card */
+.home-category-card {
+    display: block;
+    padding: 28px 24px;
+    border-radius: 20px;
+    color: #fff;
+    text-decoration: none;
+    background: var(--category-gradient, linear-gradient(135deg, #6c63ff, #4b48e6));
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.10);
+    transition: transform .25s ease, box-shadow .25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Effect */
+.home-category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.15);
+}
+
+/* Inner content */
+.home-category-card__inner h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.home-category-card__inner p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Optional glossy overlay */
+.home-category-card::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.08);
+    transform: rotate(25deg);
+    pointer-events: none;
+}
+
+/* ================================================
+   RESPONSIVE
+================================================ */
+
+@media (max-width: 768px) {
+    .home-category-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .home-category-card {
+        padding: 22px 20px;
+    }
+
+    .home-category-card__inner h3 {
+        font-size: 1.15rem;
+    }
+}
+/* ===========================================
+   RECOMMENDATION SECTION
+=========================================== */
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;   /* <<< FIX */
+    gap: 60px;
+
+    padding: 50px 60px;
+    border-radius: 24px;
+
+    background: linear-gradient(135deg, #f5f5ff, #ffffff);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+
+    margin: 50px 0;
+}
+
+
+/* IMAGE LEFT, LARGE AND VISIBLE */
+.recommendation-image img {
+    width: 260px;
+    height: auto;
+    border-radius: 14px;
+    object-fit: contain;   /* no stretching */
+}
+
+/* TEXT RIGHT */
+.recommendation-text {
+    flex: 1;
+}
+
+.recommendation-text h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.recommendation-text p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.recommendation-content .primary-btn {
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.recommendation {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;  /* center align like categories */
+}

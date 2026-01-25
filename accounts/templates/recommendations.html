@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mood-Based Recommendations - ReadWise{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/recommendation.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mood-recommendations">
+    <div class="mood-hero">
+        <h1>Discover Your Perfect Read</h1>
+        <p>
+            Tell us how you're feeling, and we'll recommend books that match or improve your mood
+            using AI-powered sentiment analysis.
+        </p>
+    </div>
+
+    <div class="mood-card">
+        <form method="post" action="{% url 'recommendations' %}">
+            {% csrf_token %}
+
+            <div class="mood-input-group">
+                <label for="mood-input">How are you feeling today?</label>
+                <textarea
+                    id="mood-input"
+                    name="mood"
+                    placeholder="Describe your current mood... (e.g., 'I'm feeling anxious and need something calming', 'Happy and want something fun', 'Sad and looking for comfort')"
+                    required>{{ user_mood }}</textarea>
+            </div>
+
+            <div class="mood-options">
+                <label class="mood-toggle">
+                    <input type="checkbox" id="improve-mood" name="improve_mood" checked>
+                    <span>Recommend books that improve my mood</span>
+                </label>
+            </div>
+
+            <button type="submit" class="mood-submit-btn">
+                Get Recommendations
+            </button>
+            <div id="sentiment-loading" style="display:none;">
+                Processing...
+            </div>
+
+            <div class="mood-examples">
+                <p>Try these example moods:</p>
+                <div class="mood-example-chips" role="list">
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I feel anxious and need something calming">
+                        Anxious
+                    </button>
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I'm feeling happy and want something fun and uplifting">
+                        Happy
+                    </button>
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I feel sad and need comfort">
+                        Sad
+                    </button>
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I'm excited and want an adventure">
+                        Excited
+                    </button>
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I need inspiration and motivation">
+                        Motivated
+                    </button>
+                    <button type="button"
+                            class="mood-chip"
+                            data-mood="I'm feeling romantic and dreamy">
+                        Romantic
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if error_message %}
+        <div class="results-section" id="error-section">
+            <div class="error-message">
+                <strong>Error:</strong> {{ error_message }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if recommendations %}
+        <div class="results-section" id="results-section">
+            <div class="results-header">
+                <h2>Your Personalized Recommendations</h2>
+                <div class="user-mood-display">
+                    Mood: "{{ user_mood }}"
+                </div>
+                <p style="color: var(--light-text); font-size: 1rem;">
+                    Found {{ recommendations|length }} perfect book{{ recommendations|length|pluralize }} for you
+                </p>
+            </div>
+
+            <div class="results-grid">
+                {% for rec in recommendations %}
+                    <article class="recommendation-item">
+                        <div class="recommendation-header">
+                            <div class="recommendation-cover">
+                                {% static 'images/placeholder.svg' as placeholder_url %}
+                                {% with cover=rec.cover_image %}
+                                    {% if cover and cover|cut:" " and cover|lower != "null" and cover|lower != "none" %}
+                                        {% with cover_src=cover %}
+                                            <img src="{{ cover_src }}"
+                                                 alt="{{ rec.title }} cover"
+                                                 data-fallback="{{ placeholder_url }}"
+                                                 onerror="this.onerror=null;this.src=this.dataset.fallback;">
+                                        {% endwith %}
+                                    {% else %}
+                                        <img src="{{ placeholder_url }}"
+                                             alt="{{ rec.title }} cover"
+                                             data-fallback="{{ placeholder_url }}"
+                                             onerror="this.onerror=null;this.src=this.dataset.fallback;">
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+
+                            <div class="recommendation-info">
+                                <div class="recommendation-rank">#{{ forloop.counter }}</div>
+                                <h3>{{ rec.title }}</h3>
+                                <p class="author">by {{ rec.author }}</p>
+
+                                <div class="recommendation-meta">
+                                    <span class="meta-badge match-score">
+                                        <i class="fas fa-heart" aria-hidden="true"></i>
+                                        {{ rec.match_percent|default:0 }}% Match
+                                    </span>
+                                    {% if rec.genre %}
+                                        <span class="meta-badge">
+                                            <i class="fas fa-tag" aria-hidden="true"></i>
+                                            {{ rec.genre }}
+                                        </span>
+                                    {% endif %}
+                                    {% if rec.dominant_mood %}
+                                        <span class="meta-badge">
+                                            <i class="fas fa-smile" aria-hidden="true"></i>
+                                            {{ rec.dominant_mood|title }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recommendation-reason">
+                            <p><strong>Why this book?</strong> {{ rec.recommendation_reason }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    {% elif not error_message %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-book-heart" aria-hidden="true"></i>
+            </div>
+            <h3>Ready to find your perfect book?</h3>
+            <p>
+                Describe how you're feeling above, and our AI will analyze thousands of books to
+                find the perfect match for your current mood.
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/recommendation.js' %}"></script>
+{% endblock %}

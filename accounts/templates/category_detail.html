@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category_name }} Books - ReadWise{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="category-detail">
+    <header class="section-header">
+        <div>
+            <h2>{{ category_name }}</h2>
+            <p class="section-caption">Results powered by Google Books.</p>
+        </div>
+    </header>
+
+    {% if book_cards %}
+        <div class="book-grid">
+            {% for book in book_cards %}
+                {% include 'components/book_card.html' with book=book %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No books found</h3>
+            <p>Try again later.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}ReadWise{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-SY8N3aYTBh61tBfMZcQIE9vPrHc8J0rKNQF2yF8y1f5r+5dYtJwSC27QYbkQ3WrW8+/VKD+1kC3RwQ5IaXyLQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    {# Global styles #}
+   <link rel="stylesheet" href="{% static 'css/global.css' %}">
+
+
+    {# Page-specific styles #}
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<header>
+    <nav class="nav-container">
+
+        <!-- LEFT SECTION -->
+        <div class="nav-left">
+            <a href="{% url 'home' %}" class="logo">
+                <h1>ReadWise</h1>
+            </a>
+
+            <a href="{% url 'trending' %}"
+               class="nav-item {% if request.resolver_match.url_name == 'trending' %}active{% endif %}">
+                Trending
+            </a>
+
+            <a href="{% url 'categories' %}"
+               class="nav-item {% if request.resolver_match.url_name == 'categories' %}active{% endif %}">
+                Categories
+            </a>
+
+            <a href="{% url 'recommendations' %}"
+               class="nav-item {% if request.resolver_match.url_name == 'recommendations' %}active{% endif %}">
+                Recommendations
+            </a>
+        </div>
+
+        <!-- CENTER SECTION (SEARCH) -->
+        <div class="nav-center">
+            <form id="search-form" action="{% url 'search' %}" method="get">
+                <input
+                    id="search-input"
+                    name="q"
+                    type="search"
+                    placeholder="Search books..."
+                    value="{{ request.GET.q|default_if_none:'' }}"
+                    autocomplete="off"
+                />
+                <button type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT SECTION -->
+      <div class="nav-right">
+
+    {% if user.is_authenticated %}
+
+        <a href="{% url 'profile' %}" class="nav-username">
+            {{ user.username }}
+        </a>
+
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+
+        {% if user.is_superuser %}
+        <a href="/admin/" class="admin-btn">Admin</a>
+        {% endif %}
+
+    {% else %}
+
+        <a href="{% url 'login' %}" class="login-btn">
+            Login / Signup
+        </a>
+
+    {% endif %}
+</div>
+    </nav>
+</header>
+
+
+
+<main>
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                    <button type="button" class="close-alert" aria-label="Dismiss"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="rw-footer">
+    <div class="rw-footer-container">
+
+        <div class="rw-footer-col">
+            <h3 class="rw-footer-logo">ReadWise</h3>
+            <p class="rw-footer-desc">
+                Discover, track, and review books tailored to your taste.
+            </p>
+        </div>
+
+        <div class="rw-footer-col">
+            <h4>Explore</h4>
+            <ul>
+                <li><a href="{% url 'categories' %}">Browse Categories</a></li>
+                <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+            </ul>
+        </div>
+
+        <div class="rw-footer-col">
+            <h4>Follow Us</h4>
+            <div class="rw-social">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="rw-footer-bottom">
+        © {{ now|date:"Y" }} ReadWise — All rights reserved.
+    </div>
+</footer>
+
+
+
+<script src="https://kit.fontawesome.com/a2e0e9f3ef.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/core.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

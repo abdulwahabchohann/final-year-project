@@ -1,139 +1,172 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}ReadWise — Home{% endblock %}
+
+{% block title %}ReadWise - Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-content">
-        <h2>Discover Books That Resonate With You</h2>
-        <p>Personalized recommendations based on your preferences and reading history.</p>
+        <h1>Discover Books That Resonate With You</h1>
+        <p>Mood-based recommendations powered by sentiment analysis to match how you feel.</p>
         <div class="hero-buttons">
             {% if not user.is_authenticated %}
-            <a href="{% url 'signup' %}" class="btn primary-btn">Get Started</a>
+                <a href="{% url 'signup' %}" class="btn primary-btn">Get Started</a>
             {% endif %}
             <a href="#how-it-works" class="btn secondary-btn">Learn More</a>
         </div>
     </div>
-    <div class="hero-image">
-        <img src="{% static 'images/cb.png' %}" alt="Books illustration" width="350">
+    <div class="hero-image" aria-hidden="true">
+        <img src="{% static 'images/landing.png' %}"
+             alt=""
+             data-fallback="{% static 'images/placeholder.svg' %}"
+             onerror="this.onerror=null;this.src=this.dataset.fallback;">
     </div>
+
 </section>
 
 <section class="trending-books">
     <div class="section-header">
-        <h2>Top Trending Books</h2>
-        <a href="{% url 'trending' %}" class="view-all">View All</a>
+        <div>
+            <h2>Top Trending Books</h2>
+            <p class="section-caption">Trending picks based on recent ratings and reader interest.</p>
+        </div>
+        <a href="{% url 'trending' %}" class="view-all">View all</a>
     </div>
-    <div class="book-carousel" id="trending-carousel">
-        <div class="book-card">
-            <div class="book-cover">
-                <img src="{% static 'images/book1.jpg' %}" alt="Book cover">
-            </div>
-            <div class="book-info">
-                <h3>The Silent Patient</h3>
-                <p class="author">Alex Michaelides</p>
-                <div class="rating">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span>4.5</span>
-                </div>
-            </div>
+
+    {% if trending_books %}
+        <div class="book-carousel" id="trending-carousel" aria-label="Trending books">
+            {% for book in trending_books %}
+                <article class="book-card">
+                    <div class="book-card__media">
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image }}"
+                                 alt="Cover for {{ book.title }}"
+                                 loading="lazy"
+                                 data-fallback="{% static 'images/placeholder.svg' %}"
+                                 onerror="this.onerror=null;this.src=this.dataset.fallback;">
+                        {% else %}
+                            <div class="book-card__placeholder">
+                                {{ book.title|slice:':1' }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="book-card__body">
+                        <h3>
+                            {% if book.url %}
+                                <a href="{{ book.url }}">
+                                    {{ book.title }}
+                                </a>
+                            {% else %}
+                                {{ book.title }}
+                            {% endif %}
+                        </h3>
+                        <p class="book-card__meta">
+                            {{ book.authors_display|default:"Author unknown" }}
+                        </p>
+                        {% if book.subtitle %}
+                            <p class="book-card__subtitle">
+                                {{ book.subtitle|truncatewords:14 }}
+                            </p>
+                        {% endif %}
+                        <div class="book-card__footer">
+                            {% if book.average_rating %}
+                                <span class="rating">
+                                    &#9733; {{ book.average_rating }}
+                                    {% if book.ratings_count %}
+                                        ({{ book.ratings_count }})
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                            {% if book.published_year %}
+                                <span class="year">{{ book.published_year }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="book-card__actions">
+                            {% if book.url %}
+                                <a href="{{ book.url }}">View details</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
         </div>
-        <div class="book-card">
-            <div class="book-cover">
-                <img src="https://via.placeholder.com/150x225" alt="Book cover">
-            </div>
-            <div class="book-info">
-                <h3>Atomic Habits</h3>
-                <p class="author">James Clear</p>
-                <div class="rating">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>4.8</span>
-                </div>
-            </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No trending books yet</h3>
+            <p>Add ratings and reviews to start building the trending list.</p>
         </div>
-        <div class="book-card">
-            <div class="book-cover">
-                <img src="https://via.placeholder.com/150x225" alt="Book cover">
-            </div>
-            <div class="book-info">
-                <h3>Project Hail Mary</h3>
-                <p class="author">Andy Weir</p>
-                <div class="rating">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>4.9</span>
-                </div>
-            </div>
-        </div>
-        <div class="book-card">
-            <div class="book-cover">
-                <img src="https://via.placeholder.com/150x225" alt="Book cover">
-            </div>
-            <div class="book-info">
-                <h3>Thinking, Fast and Slow</h3>
-                <p class="author">Daniel Kahneman</p>
-                <div class="rating">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <span>4.0</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="carousel-controls">
-        <button class="prev-btn" data-target="trending-carousel"><i class="fas fa-chevron-left"></i></button>
-        <button class="next-btn" data-target="trending-carousel"><i class="fas fa-chevron-right"></i></button>
-    </div>
+    {% endif %}
 </section>
 
-<section class="categories home-categories">
+<section class="categories">
     <div class="section-header">
-        <h2>Browse by Categories</h2>
-        <p>Explore a wide range of genres and find your next favorite read.</p>
+        <div>
+            <h2>Explore Genres</h2>
+            <p class="section-caption">
+                Pick a category that matches your interest - from self-help and time management to psychology, business, finance, technology, and leadership.
+            </p>
+        </div>
     </div>
-    <div class="home-category-grid">
-        <div class="home-category-card home-category-card--fiction"><h3>Fiction</h3></div>
-        <div class="home-category-card home-category-card--selfhelp"><h3>Self-Help</h3></div>
-        <div class="home-category-card home-category-card--religious"><h3>Religious</h3></div>
-        <div class="home-category-card home-category-card--health"><h3>Health &amp; Wellness</h3></div>
-        <div class="home-category-card home-category-card--science"><h3>Science &amp; Technology</h3></div>
-        <div class="home-category-card home-category-card--history"><h3>History</h3></div>
-        <div class="home-category-card home-category-card--business"><h3>Business &amp; Economics</h3></div>
-        <div class="home-category-card home-category-card--biography"><h3>Biographies</h3></div>
-        <div class="home-category-card home-category-card--mystery"><h3>Mystery &amp; Thriller</h3></div>
-    </div>
+
+    {% if home_categories %}
+        <div class="home-category-grid">
+            {% for category in home_categories %}
+                <a href="{% url 'category_detail' category.slug %}"
+                   class="home-category-card"
+                   style="--category-gradient: {{ category.gradient }};">
+                    <div class="home-category-card__inner">
+                        <h3>{{ category.name }}</h3>
+                        {% if category.book_count %}
+                            <p>{{ category.book_count }} book{{ category.book_count|pluralize }}</p>
+                        {% else %}
+                            <p>Browse titles</p>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No categories found</h3>
+            <p>Visit the categories page to manage genres and associated books.</p>
+        </div>
+    {% endif %}
 </section>
 
-<section class="recommendation-section">
+<section class="recommendation">
     <div class="section-header">
-        <h2>Personalized For You</h2>
-        <a href="{% url 'recommendations' %}" class="view-all">View All</a>
+        <div>
+            <h2>Mood-Based For You</h2>
+            <p class="section-caption">Recommendations tuned to your mood using sentiment analysis.</p>
+        </div>
     </div>
+
     <div class="recommendation-content">
-        <div class="recommendation-text">
-            <h3>Get Book Recommendations Based on Your Mood</h3>
-            <p>Our sentiment analysis technology understands your preferences and suggests books that match your emotional preferences.</p>
-            <a href="{% url 'signup' %}" class="btn primary-btn">Start Getting Recommendations</a>
-        </div>
-        <div class="recommendation-image">
-            <img src="{% static 'images/recommendation.jpg' %}" alt="Personalized recommendations">
-        </div>
+
+    <div class="recommendation-text">
+        <h3>Get Book Recommendations Based on Your Mood</h3>
+        <p>
+            Our sentiment analysis technology understands your preferences
+            and suggests books that match your emotional state.
+        </p>
+        <a href="{% url 'recommendations' %}" class="btn primary-btn">
+            Start getting recommendations
+        </a>
+    </div>
+
+    <div class="recommendation-image" aria-hidden="true">
+        <img src="{% static 'images/recommendation.PNG' %}" alt="">
+    </div>
+
+</div>
+
     </div>
 </section>
 
-<section class="how-it-works" id="how-it-works">
-    <h2>How ReadWise Works</h2>
-    <div class="steps-container">
-        <div class="step"><div class="step-icon"><i class="fas fa-search"></i></div><h3>Search</h3><p>Find books by title, author, ISBN, or keywords with our advanced search.</p></div>
-        <div class="step"><div class="step-icon"><i class="fas fa-star"></i></div><h3>Rate & Review</h3><p>Share your thoughts on books you've read to improve recommendations.</p></div>
-        <div class="step"><div class="step-icon"><i class="fas fa-chart-line"></i></div><h3>Discover Trends</h3><p>Explore what's popular in different categories and genres.</p></div>
-        <div class="step"><div class="step-icon"><i class="fas fa-book-reader"></i></div><h3>Get Personalized</h3><p>Receive mood-based recommendations tailored to your preferences.</p></div>
-    </div>
-</section>
+<script src="{% static 'js/core.js' %}"></script>
 {% endblock %}

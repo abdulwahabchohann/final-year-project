@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search{% if query %} - {{ query }}{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="search-page">
+    <div class="search-layout">
+        <div class="search-results">
+            <header class="search-header">
+                {% if query or active_genre_obj %}
+                    <h2>
+                        {% if query %}Results for "{{ query }}"{% endif %}
+                        {% if active_genre_obj %}
+                            <span class="tag">in {{ active_genre_obj.name }}</span>
+                        {% endif %}
+                    </h2>
+                    <p>Found {{ total_results }} result{{ total_results|pluralize }}.</p>
+                {% else %}
+                    <h2>Find your next book</h2>
+                    <p>Search by title, author, ISBN, or explore the curated picks below.</p>
+                {% endif %}
+            </header>
+
+            {% if result_cards %}
+                <div class="book-grid">
+                    {% for book in result_cards %}
+                        {% include 'components/book_card.html' with book=book %}
+                    {% endfor %}
+                </div>
+            {% elif show_empty_state %}
+                <div class="empty-state">
+                    <h3>No matches yet</h3>
+                    <p>Try broadening your keywords or clearing the genre filter.</p>
+                </div>
+            {% endif %}
+
+            {% if external_error %}
+                <div class="alert alert-warning search-alert">
+                    Could not fetch Google Books results: {{ external_error }}
+                </div>
+            {% endif %}
+
+            {% if external_cards %}
+                <section class="external-shelf" aria-label="More results from Google Books">
+                    <h2>More results from Google Books</h2>
+                    <div class="book-grid">
+                        {% for book in external_cards %}
+                            {% include 'components/book_card.html' with book=book %}
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+
+            {% if popular_cards %}
+                <section class="popular-shelf">
+                    <h2>Popular right now</h2>
+                    <div class="book-grid">
+                        {% for book in popular_cards %}
+                            {% include 'components/book_card.html' with book=book %}
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

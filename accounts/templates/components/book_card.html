@@ -1,0 +1,56 @@
+{% load static %}
+<article class="book-card">
+    <div class="book-card__media">
+        {% if book.cover_image %}
+            <img src="{{ book.cover_image }}"
+                 alt="Cover for {{ book.title|default:'Untitled' }}"
+                 loading="lazy"
+                 data-fallback="{% static 'images/placeholder.svg' %}"
+                 onerror="this.onerror=null;this.src=this.dataset.fallback;">
+        {% elif book.thumbnail %}
+            <img src="{{ book.thumbnail }}"
+                 alt="Cover for {{ book.title|default:'Untitled' }}"
+                 loading="lazy"
+                 data-fallback="{% static 'images/placeholder.svg' %}"
+                 onerror="this.onerror=null;this.src=this.dataset.fallback;">
+        {% else %}
+            <div class="book-card__placeholder">
+                {{ book.title|default:'?'|slice:':1' }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="book-card__body">
+        <h3>
+            {% if book.url %}
+                <a href="{{ book.url }}">
+                    {{ book.title|default:'Untitled' }}
+                </a>
+            {% else %}
+                {{ book.title|default:'Untitled' }}
+            {% endif %}
+        </h3>
+        <p class="book-card__meta">
+            {{ book.authors_display|default:"Author unknown" }}
+        </p>
+        <div class="book-card__footer">
+            {% if book.average_rating %}
+                <span class="rating">
+                    &#9733; {{ book.average_rating }}
+                    {% if book.ratings_count %}
+                        ({{ book.ratings_count }})
+                    {% endif %}
+                </span>
+            {% endif %}
+            {% if book.published_year %}
+                <span class="year">{{ book.published_year }}</span>
+            {% endif %}
+        </div>
+        {% if book.url %}
+            <div class="book-card__actions">
+                <a href="{{ book.url }}">
+                    {{ book.cta_label|default:"View details" }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</article>

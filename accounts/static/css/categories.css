@@ -1,0 +1,58 @@
+/* Categories page styles */
+.categories-hero {
+    background: linear-gradient(135deg, rgba(108, 99, 255, 0.12), rgba(90, 203, 255, 0.16));
+    padding: 60px 5% 40px;
+}
+
+.categories-hero__text {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.categories-module {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 5% 60px;
+}
+
+.categories-module__intro {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 10px 28px rgba(82, 85, 100, 0.08);
+}
+
+.categories-grid {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.category-card {
+    display: block;
+    border-radius: 18px;
+    color: #fff;
+    text-decoration: none;
+    padding: 22px 18px;
+    background: var(--category-gradient, linear-gradient(140deg, #6c63ff, #4b48e6));
+    box-shadow: 0 16px 35px rgba(82, 85, 100, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 45px rgba(82, 85, 100, 0.16);
+}
+
+.category-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.category-card__subtitle {
+    margin-top: 6px;
+    opacity: 0.9;
+}

@@ -2,6 +2,7 @@ import json
 import logging
 import re
 import secrets
+from pathlib import Path
 from decimal import Decimal
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -15,6 +16,7 @@ from django.contrib.auth.models import User
 from django.db.models import DecimalField, IntegerField, Q, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import Http404
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.core.cache import cache
 from django.utils.text import slugify
@@ -35,11 +37,33 @@ from .services.external import (
     get_cached_books,
     get_cached_category_list,
 )
-from .services.google_books import GoogleBooksError, search_google_books
+from .services.cover_utils import PLACEHOLDER_COVER_URL, normalize_cover
+from .services.google_books import GoogleBook, GoogleBooksError, search_google_books
 
 logger = logging.getLogger(__name__)
 SLUG_PATTERN = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 TRENDING_SEED_CACHE_KEY = 'accounts:trending:seeded:v1'
+
+HOME_CATEGORY_CHOICES = [
+    ('self-help', 'Self Help'),
+    ('business', 'Business'),
+    ('finance', 'Finance'),
+    ('technology', 'Technology'),
+    ('psychology', 'Psychology'),
+    ('leadership', 'Leadership'),
+    ('time-management', 'Time Management'),
+]
+
+
+def _resolve_dataset_path() -> str:
+    candidates = [
+        Path(settings.BASE_DIR) / 'books_dataset_5000.json',
+        Path(settings.BASE_DIR) / 'data' / 'books_dataset_5000.json',
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    return str(candidates[0])
 
 
 def _book_identity_key(book: Book) -> str:
@@ -166,7 +190,7 @@ def _normalize_card(book: Book) -> dict:
         'subtitle': book.subtitle,
         'authors_display': ', '.join(authors) if authors else 'Author unknown',
         'description': book.description,
-        'cover_image': book.cover_image,
+        'cover_image': normalize_cover(book.cover_image),
         'published_year': book.published_year,
         'average_rating': book.average_rating,
         'ratings_count': book.ratings_count,
@@ -184,13 +208,40 @@ def _normalize_external_card(payload: dict) -> dict:
         'subtitle': payload.get('subtitle') or '',
         'authors_display': ', '.join(authors) if authors else 'Author unknown',
         'description': payload.get('description') or '',
-        'cover_image': payload.get('thumbnail') or '',
+        'cover_image': normalize_cover(payload.get('thumbnail')),
         'published_year': payload.get('published_year'),
         'average_rating': payload.get('average_rating'),
         'ratings_count': payload.get('ratings_count'),
         'tags': categories[:3],
         'url': payload.get('info_url') or '',
         'source': 'external',
+    }
+
+
+def _normalize_google_book(book: GoogleBook) -> dict:
+    authors = getattr(book, 'authors', None) or []
+    categories = getattr(book, 'categories', None) or []
+    thumbnail = normalize_cover(getattr(book, 'thumbnail', '') or '')
+    url = ''
+    if getattr(book, 'identifier', None):
+        url = reverse('book_detail', args=[book.identifier])
+    elif getattr(book, 'info_link', None):
+        url = book.info_link
+
+    return {
+        'title': getattr(book, 'title', '') or 'Untitled',
+        'subtitle': getattr(book, 'subtitle', '') or '',
+        'authors_display': ', '.join(authors) if authors else 'Author unknown',
+        'description': getattr(book, 'description', '') or '',
+        'cover_image': thumbnail,
+        'thumbnail': thumbnail,
+        'published_year': getattr(book, 'published_year', None),
+        'average_rating': getattr(book, 'average_rating', None),
+        'ratings_count': getattr(book, 'ratings_count', None),
+        'tags': categories[:3],
+        'url': url,
+        'source': 'external',
+        'cta_label': 'View details',
     }
 
 
@@ -230,21 +281,10 @@ def home(request):
         ('#7392ff', '#2a4cc6'),
     ]
 
-    desired_home_categories = [
-        ('self-improvement', 'Self-Improvement'),
-        ('business', 'Business'),
-        ('technology', 'Technology'),
-        ('psychology', 'Psychology'),
-        ('data-science-ai', 'Data Science & AI'),
-        ('religion-spirituality', 'Religion & Spirituality'),
-        ('philosophy-critical-thinking', 'Philosophy & Critical Thinking'),
-        ('health-wellness', 'Health & Wellness'),
-    ]
-
     category_payload = get_cached_category_list()
     payload_by_slug = {item['slug']: item for item in category_payload}
     home_categories = []
-    for index, (slug, display_name) in enumerate(desired_home_categories):
+    for index, (slug, display_name) in enumerate(HOME_CATEGORY_CHOICES):
         gradient_start, gradient_end = genre_palette[index % len(genre_palette)]
         payload = payload_by_slug.get(slug, {})
         home_categories.append(
@@ -280,31 +320,57 @@ def trending(request):
 
 def categories(request):
     category_payload = get_cached_category_list()
-    initial_slug = request.GET.get('slug', '').strip().lower()
-    if initial_slug and not SLUG_PATTERN.match(initial_slug):
-        initial_slug = ''
+    payload_by_slug = {item['slug']: item for item in category_payload}
+    categories_for_page = []
+    for index, (slug, display_name) in enumerate(HOME_CATEGORY_CHOICES):
+        gradient_start, gradient_end = (
+            ('#5a7dff', '#1f3bb3'),
+            ('#637fff', '#2240bd'),
+            ('#6d88ff', '#2545c7'),
+            ('#7791ff', '#294bce'),
+            ('#4f6bff', '#1d369f'),
+            ('#5873ff', '#203ba8'),
+            ('#6180ff', '#2440b2'),
+            ('#6a89ff', '#2646bc'),
+            ('#7392ff', '#2a4cc6'),
+        )[index % 9]
+        payload = payload_by_slug.get(slug, {})
+        categories_for_page.append(
+            {
+                'name': display_name,
+                'slug': slug,
+                'book_count': payload.get('book_count_estimate'),
+                'gradient': f'linear-gradient(140deg, {gradient_start}, {gradient_end})',
+            }
+        )
 
-    context = {
-        'initial_categories_json': json.dumps(category_payload),
-        'initial_slug': initial_slug,
-    }
+    context = {'categories': categories_for_page}
     return render(request, 'categories.html', context)
 
 
 def category_detail(request, slug):
-    genre = get_object_or_404(Genre, slug=slug)
+    category_map = dict(HOME_CATEGORY_CHOICES)
+    if slug not in category_map:
+        raise Http404("Unknown category")
 
-    books = (
-        Book.objects.filter(genres=genre)
-        .prefetch_related('authors', 'genres')
-        .order_by('-average_rating', '-ratings_count', 'title')
-    )
-    books = list(books)
+    display_name = category_map[slug]
+    try:
+        results = search_google_books(f"subject:{display_name}", max_results=40, language="en")
+    except GoogleBooksError as exc:
+        logger.warning("Google Books search failed for category %s: %s", slug, exc)
+        results = []
+
+    book_cards = []
+    for item in results:
+        if not getattr(item, 'identifier', None):
+            continue
+        book_cards.append(_normalize_google_book(item))
+        if len(book_cards) >= 16:
+            break
 
     context = {
-        'genre': genre,
-        'books': books,
-        'book_total': len(books),
+        'category_name': display_name,
+        'book_cards': book_cards,
     }
     return render(request, 'category_detail.html', context)
 
@@ -360,7 +426,7 @@ class CategoryBooksView(APIView):
                     'authors': [author.full_name for author in book.authors.all()],
                     'description': book.description or '',
                     'categories': [genre.name],
-                    'thumbnail': book.cover_image or '',
+                    'thumbnail': normalize_cover(book.cover_image),
                     'info_url': '',
                     'published_year': book.published_year,
                     'source': 'local',
@@ -450,27 +516,57 @@ class CategoryBooksView(APIView):
             merged_items = local_items
             payload = {'page': 1, 'items': merged_items}
 
+        for item in merged_items:
+            if isinstance(item, dict):
+                item['thumbnail'] = normalize_cover(item.get('thumbnail'))
+
         serializer = BookSerializer(merged_items, many=True)
         return Response({'page': payload.get('page', page_number), 'items': serializer.data})
 
 
 def book_detail(request, slug):
-    book = get_object_or_404(
-        Book.objects.prefetch_related('authors', 'genres'),
-        slug=slug,
+    # Try local DB first (for existing data)
+    book = (
+        Book.objects.prefetch_related('authors', 'genres')
+        .filter(slug=slug)
+        .first()
     )
+    if book:
+        authors = [author.full_name for author in book.authors.all()]
+        cover_image = normalize_cover(book.cover_image)
+        description = book.description or ''
+        context = {
+            'title': book.title,
+            'cover_image': cover_image,
+            'description': description,
+            'authors': authors,
+        }
+        return render(request, 'book_detail.html', context)
 
-    related_books = list(
-        Book.objects.filter(genres__in=book.genres.all())
-        .exclude(pk=book.pk)
-        .order_by('-average_rating', '-ratings_count')
-        .prefetch_related('authors')
-        .distinct()[:6]
-    )
+    # Fallback to Google Books volume
+    api_key = getattr(settings, 'GOOGLE_BOOKS_API_KEY', '')
+    params = {'key': api_key} if api_key else {}
+    url = f"https://www.googleapis.com/books/v1/volumes/{slug}"
+    if params:
+        url = f"{url}?{urlencode(params)}"
+
+    try:
+        with urlopen(url, timeout=8) as resp:
+            payload = json.loads(resp.read().decode('utf-8'))
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
+        logger.warning("Failed to fetch Google volume %s: %s", slug, exc)
+        raise Http404("Book not found")
+
+    info = payload.get('volumeInfo') or {}
+    image_links = info.get('imageLinks') or {}
 
     context = {
-        'book': book,
-        'related_books': related_books,
+        'title': info.get('title') or 'Untitled',
+        'cover_image': normalize_cover(
+            image_links.get('thumbnail') or image_links.get('smallThumbnail') or ''
+        ),
+        'description': info.get('description') or '',
+        'authors': info.get('authors') or [],
     }
     return render(request, 'book_detail.html', context)
 
@@ -509,6 +605,9 @@ class MoodRecommendationsAPIView(APIView):
                 improve_mood=improve_mood,
                 min_confidence=0.3
             )
+
+            for rec in recommendations:
+                rec['cover_image'] = normalize_cover(rec.get('cover_image'))
             
             return Response({
                 'mood': user_mood,
@@ -530,6 +629,90 @@ class MoodRecommendationsAPIView(APIView):
             )
 
 
+class DatasetRecommendationsAPIView(APIView):
+    """
+    API endpoint for deterministic dataset-based book recommendations.
+
+    POST /api/recommendations/dataset/
+    Body: {
+        "mood": "I feel calm but a bit anxious",
+        "limit": 10
+    }
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        user_mood = (request.data.get('mood', '') or '').strip()
+        if not user_mood:
+            return Response({'error': 'Mood description is required.'}, status=400)
+
+        limit_raw = request.data.get('limit', 10)
+        try:
+            limit = int(limit_raw)
+        except (TypeError, ValueError):
+            return Response({'error': 'limit must be an integer.'}, status=400)
+        limit = max(1, min(limit, 20))
+
+        try:
+            from accounts.services.dataset_recommender import get_dataset_recommender
+
+            dataset_path = _resolve_dataset_path()
+            recommender = get_dataset_recommender(dataset_path)
+            recommendations = recommender.recommend(user_mood, top_n=limit)
+            user_profile = recommender.analyze_user_mood(user_mood)
+
+            payload = []
+            seen_ids = set()
+            for rec in recommendations:
+                book_id = rec.get('book_id')
+                if book_id in seen_ids:
+                    continue
+                seen_ids.add(book_id)
+                payload.append(
+                    {
+                        'book_id': book_id,
+                        'title': rec.get('title'),
+                        'author': rec.get('author'),
+                        'genres': rec.get('genres', []),
+                        'average_rating': rec.get('average_rating'),
+                        'ratings_count': rec.get('ratings_count'),
+                        'cover_image': normalize_cover(PLACEHOLDER_COVER_URL),
+                        'dominant_mood': rec.get('dominant_mood'),
+                        'sentiment_score': rec.get('sentiment_score'),
+                        'emotional_intensity': rec.get('emotional_intensity'),
+                        'score': rec.get('score'),
+                        'explanation': rec.get('explanation'),
+                    }
+                )
+
+            return Response(
+                {
+                    'schema': 'dataset_v1',
+                    'source': 'dataset',
+                    'ui_compatible': False,
+                    'mood': user_mood,
+                    'limit': limit,
+                    'count': len(payload),
+                    'inferred_mood': {
+                        'dominant_mood': user_profile.dominant_mood,
+                        'sentiment_score': user_profile.sentiment_score,
+                        'emotional_intensity': user_profile.emotional_intensity,
+                        'mood_scores': user_profile.mood_scores,
+                    },
+                    'recommendations': payload,
+                }
+            )
+        except FileNotFoundError:
+            logger.error("Dataset file not found for dataset recommender.")
+            return Response({'error': 'Dataset is unavailable.'}, status=503)
+        except (json.JSONDecodeError, ValueError) as exc:
+            logger.error("Invalid dataset format for dataset recommender: %s", exc, exc_info=True)
+            return Response({'error': 'Dataset is invalid or corrupted.'}, status=500)
+        except Exception as exc:
+            logger.error("Error in DatasetRecommendationsAPIView: %s", exc, exc_info=True)
+            return Response({'error': 'Unable to generate recommendations at this time.'}, status=500)
+
+
 def recommendations(request):
     """
     Mood-based book recommendations view.
@@ -541,18 +724,101 @@ def recommendations(request):
     
     if request.method == 'POST':
         user_mood = (request.POST.get('mood', '') or '').strip()
-        improve_mood = request.POST.get('improve_mood', 'on') == 'on'  # Default to True
-        
+        # Checkbox sends a value only when checked; treat presence as True
+        improve_mood = 'improve_mood' in request.POST
+
         if user_mood:
             try:
                 from accounts.services.mood_recommender import get_mood_recommender
                 recommender = get_mood_recommender()
                 recommendations_list = recommender.recommend_books(
                     user_mood=user_mood,
-                    limit=5,
+                    limit=3,
                     improve_mood=improve_mood,
                     min_confidence=0.3
                 )
+                # Clean and enrich recommendation payloads for the template
+                placeholder_cover = PLACEHOLDER_COVER_URL
+                source_counts = {}
+                book_ids = [rec.get('book_id') for rec in recommendations_list if rec.get('book_id')]
+                books_by_id = {
+                    book.id: book
+                    for book in Book.objects.filter(id__in=book_ids)
+                }
+
+                def _is_valid_cover_url(value: str) -> bool:
+                    return isinstance(value, str) and normalize_cover(value) == value
+
+                for rec in recommendations_list:
+                    raw_cover = rec.get('cover_image') or rec.get('thumbnail') or ''
+                    cover = normalize_cover(raw_cover)
+                    source = 'missing'
+
+                    book = books_by_id.get(rec.get('book_id'))
+                    if cover != placeholder_cover:
+                        if book:
+                            stored_cover = normalize_cover(book.cover_image)
+                            if stored_cover != placeholder_cover and cover == stored_cover:
+                                source = 'db_cover'
+                            else:
+                                for ident in (book.isbn_13, book.isbn_10):
+                                    clean_ident = (ident or '').replace('-', '').strip()
+                                    if not clean_ident:
+                                        continue
+                                    openlibrary = f'https://covers.openlibrary.org/b/isbn/{clean_ident}-L.jpg'
+                                    if cover == openlibrary:
+                                        source = 'openlibrary_isbn'
+                                        break
+                                if source == 'missing':
+                                    if 'google' in cover or 'googleusercontent' in cover:
+                                        source = 'google_books'
+                                    else:
+                                        source = 'external'
+                        else:
+                            if 'google' in cover or 'googleusercontent' in cover:
+                                source = 'google_books'
+                            else:
+                                source = 'external'
+                    else:
+                        source = 'placeholder'
+
+                    logger.info(
+                        "recommendations.cover: book_id=%s title=%s raw=%s resolved=%s source=%s",
+                        rec.get('book_id'),
+                        rec.get('title'),
+                        raw_cover,
+                        cover,
+                        source,
+                    )
+                    if settings.DEBUG and not rec.get('_cover_resolved'):
+                        raise ValueError(
+                            f"Cover resolver was not invoked for book_id={rec.get('book_id')} "
+                            f"title={rec.get('title')}"
+                        )
+                    if settings.DEBUG and not _is_valid_cover_url(cover):
+                        raise ValueError(
+                            f"Invalid cover_image detected for book_id={rec.get('book_id')} "
+                            f"title={rec.get('title')}: {cover!r}"
+                        )
+                    rec['cover_image'] = normalize_cover(cover)
+                    score = rec.get('sentiment_score') or 0
+                    rec['match_percent'] = int(round(float(score) * 100))
+                    source_counts[source] = source_counts.get(source, 0) + 1
+
+                total = len(recommendations_list)
+                if total:
+                    placeholder_count = source_counts.get('placeholder', 0)
+                    logger.info(
+                        "recommendations.cover_summary total=%s db_cover=%s openlibrary=%s google_books=%s "
+                        "placeholder=%s placeholder_pct=%.1f other=%s",
+                        total,
+                        source_counts.get('db_cover', 0),
+                        source_counts.get('openlibrary_isbn', 0),
+                        source_counts.get('google_books', 0),
+                        placeholder_count,
+                        (placeholder_count / total) * 100,
+                        source_counts.get('external', 0),
+                    )
             except ImportError as e:
                 error_message = (
                     'Mood-based recommendations are currently unavailable. '
@@ -584,7 +850,10 @@ def search_books(request):
     query = (request.GET.get('q') or '').strip()
     genre_slug = (request.GET.get('genre') or '').strip()
 
-    results = Book.objects.none()
+    results_queryset = Book.objects.none()
+    result_cards: list[dict] = []
+    external_cards: list[dict] = []
+    popular_cards: list[dict] = []
     total_results = 0
 
     base_queryset = Book.objects.all().prefetch_related('authors', 'genres')
@@ -604,20 +873,22 @@ def search_books(request):
         base_queryset = base_queryset.filter(genres__slug=genre_slug)
 
     if query or genre_slug:
-        results = base_queryset.distinct()
-        total_results = results.count()
+        results_queryset = base_queryset.distinct()
+        total_results = results_queryset.count()
+        # Limit the number of cards we render to keep the page lightweight.
+        local_books = list(results_queryset[:24])
+        result_cards = [_normalize_card(book) for book in local_books]
 
     genres = list(Genre.objects.order_by('name'))
     active_genre_obj = None
     if genre_slug:
         active_genre_obj = next((genre for genre in genres if genre.slug == genre_slug), None)
-    popular_books = []
-    external_books = []
     external_error = ''
 
     if query:
         try:
             external_books = search_google_books(query, max_results=8, language='en')
+            external_cards = [_normalize_google_book(book) for book in external_books]
         except GoogleBooksError as exc:
             external_error = str(exc)
 
@@ -626,18 +897,20 @@ def search_books(request):
             Book.objects.order_by('-average_rating', '-ratings_count')
             .prefetch_related('authors', 'genres')[:8]
         )
+        popular_cards = [_normalize_card(book) for book in popular_books]
 
-    show_empty_state = total_results == 0 and bool(query or active_genre_obj) and not external_books
+    show_empty_state = total_results == 0 and bool(query or active_genre_obj) and not external_cards
 
     context = {
         'query': query,
         'active_genre': genre_slug,
         'genres': genres,
-        'results': results,
+        'results': results_queryset,
+        'result_cards': result_cards,
         'total_results': total_results,
-        'popular_books': popular_books,
+        'popular_cards': popular_cards,
         'active_genre_obj': active_genre_obj,
-        'external_books': external_books,
+        'external_cards': external_cards,
         'external_error': external_error,
         'show_empty_state': show_empty_state,
     }

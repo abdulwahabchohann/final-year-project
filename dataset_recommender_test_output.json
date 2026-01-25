@@ -1,0 +1,933 @@
+[
+  {
+    "input_mood": "Hopeful and calm",
+    "inferred_mood": {
+      "dominant_mood": "Calm",
+      "sentiment_score": 0.5154,
+      "emotional_intensity": 0.35,
+      "mood_scores": {
+        "Happy": 0.05,
+        "Sad": 0.05,
+        "Dark": 0.05,
+        "Calm": 0.25,
+        "Excited": 0.05,
+        "Angry": 0.05,
+        "Fearful": 0.05,
+        "Hopeful": 0.05,
+        "Romantic": 0.05,
+        "Humorous": 0.05,
+        "Motivational": 0.05,
+        "Relaxed": 0.05,
+        "Thrilling": 0.05,
+        "Mysterious": 0.05,
+        "Reflective": 0.05,
+        "Adventurous": 0.05
+      }
+    },
+    "recommendations": [
+      {
+        "book_id": "8537",
+        "title": "Harmonious Melodies - Volume 69",
+        "author": "David Wilson, Nicole Thompson, William Walker",
+        "genres": [
+          "History",
+          "Health"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1964",
+        "title": "Harmonious Melodies - Volume 33",
+        "author": "Emily Johnson, James Martin, Stephanie Hall",
+        "genres": [
+          "Health",
+          "Non-Fiction"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7791",
+        "title": "Foolish Mistakes - Volume 52",
+        "author": "Ashley Harris, Stephanie Hall",
+        "genres": [
+          "Health",
+          "Non-Fiction"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7116",
+        "title": "Devastating Losses - Volume 36",
+        "author": "Michelle Lewis, Stephanie Hall, Amy Turner",
+        "genres": [
+          "History",
+          "Health"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7558",
+        "title": "Foolish Mistakes - Volume 47",
+        "author": "Matthew Thomas, Daniel White",
+        "genres": [
+          "History",
+          "Health"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3634",
+        "title": "Beautiful Memories - Volume 71",
+        "author": "Emily Johnson, Thomas Lopez",
+        "genres": [
+          "History",
+          "Health"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8143",
+        "title": "Glorious Achievements - Volume 60",
+        "author": "Michael Brown, Lauren Jackson",
+        "genres": [
+          "History",
+          "Health"
+        ],
+        "score": 0.8473,
+        "score_components": {
+          "mood_similarity": 0.7644,
+          "sentiment_alignment": 0.9693,
+          "intensity_alignment": 0.9757
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3635",
+        "title": "Peaceful Moments - Volume 71",
+        "author": "John Smith, Sarah Davis",
+        "genres": [
+          "Business",
+          "Non-Fiction"
+        ],
+        "score": 0.8455,
+        "score_components": {
+          "mood_similarity": 0.7574,
+          "sentiment_alignment": 0.9706,
+          "intensity_alignment": 0.9893
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7206",
+        "title": "Radiant Smiles - Volume 39",
+        "author": "Matthew Thomas",
+        "genres": [
+          "Business",
+          "Poetry"
+        ],
+        "score": 0.8382,
+        "score_components": {
+          "mood_similarity": 0.7381,
+          "sentiment_alignment": 0.9829,
+          "intensity_alignment": 0.9974
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.03). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3845",
+        "title": "Broken Dreams - Volume 76",
+        "author": "William Walker, Ryan Mitchell",
+        "genres": [
+          "Business",
+          "Poetry"
+        ],
+        "score": 0.8382,
+        "score_components": {
+          "mood_similarity": 0.7381,
+          "sentiment_alignment": 0.9829,
+          "intensity_alignment": 0.9974
+        },
+        "explanation": "Mood overlap on Calm. Sentiment is close to yours (delta 0.03). Emotional intensity aligns with your current level."
+      }
+    ]
+  },
+  {
+    "input_mood": "Excited adventure",
+    "inferred_mood": {
+      "dominant_mood": "Adventurous",
+      "sentiment_score": 0.494,
+      "emotional_intensity": 0.2085,
+      "mood_scores": {
+        "Happy": 0.0417,
+        "Sad": 0.0417,
+        "Dark": 0.0417,
+        "Calm": 0.0417,
+        "Excited": 0.2079,
+        "Angry": 0.0417,
+        "Fearful": 0.0417,
+        "Hopeful": 0.0417,
+        "Romantic": 0.0417,
+        "Humorous": 0.0417,
+        "Motivational": 0.0417,
+        "Relaxed": 0.0417,
+        "Thrilling": 0.0417,
+        "Mysterious": 0.0417,
+        "Reflective": 0.0417,
+        "Adventurous": 0.2083
+      }
+    },
+    "recommendations": [
+      {
+        "book_id": "6021",
+        "title": "Fear and Loathing - Volume 12",
+        "author": "William Walker, Laura Wright, Melissa Baker",
+        "genres": [
+          "Fantasy"
+        ],
+        "score": 0.9336,
+        "score_components": {
+          "mood_similarity": 0.9224,
+          "sentiment_alignment": 0.9754,
+          "intensity_alignment": 0.9085
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.05). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7054",
+        "title": "Tender Moments - Volume 35",
+        "author": "Matthew Thomas, William Walker",
+        "genres": [
+          "Fiction",
+          "Fantasy"
+        ],
+        "score": 0.9325,
+        "score_components": {
+          "mood_similarity": 0.8953,
+          "sentiment_alignment": 0.982,
+          "intensity_alignment": 0.9985
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.04). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6192",
+        "title": "Glorious Achievements - Volume 15",
+        "author": "William Walker",
+        "genres": [
+          "Fiction",
+          "Fantasy"
+        ],
+        "score": 0.9292,
+        "score_components": {
+          "mood_similarity": 0.8896,
+          "sentiment_alignment": 0.9882,
+          "intensity_alignment": 0.9897
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.02). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3917",
+        "title": "Radiant Smiles - Volume 77",
+        "author": "Jessica Martinez, Michelle Lewis, Charles King",
+        "genres": [
+          "Fiction",
+          "Fantasy"
+        ],
+        "score": 0.9292,
+        "score_components": {
+          "mood_similarity": 0.8896,
+          "sentiment_alignment": 0.9882,
+          "intensity_alignment": 0.9897
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.02). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6427",
+        "title": "Lost in Despair - Volume 21",
+        "author": "John Smith, William Walker",
+        "genres": [
+          "Fiction",
+          "Fantasy"
+        ],
+        "score": 0.9235,
+        "score_components": {
+          "mood_similarity": 0.8896,
+          "sentiment_alignment": 0.9652,
+          "intensity_alignment": 0.9897
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.07). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8612",
+        "title": "Depressing Narratives - Volume 70",
+        "author": "Nicole Thompson, Angela Green",
+        "genres": [
+          "Non-Fiction",
+          "Fantasy"
+        ],
+        "score": 0.9206,
+        "score_components": {
+          "mood_similarity": 0.874,
+          "sentiment_alignment": 0.9928,
+          "intensity_alignment": 0.9871
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.01). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "2054",
+        "title": "Lost in Despair - Volume 35",
+        "author": "John Smith, David Wilson, Ryan Mitchell",
+        "genres": [
+          "Fantasy"
+        ],
+        "score": 0.9192,
+        "score_components": {
+          "mood_similarity": 0.9175,
+          "sentiment_alignment": 0.9408,
+          "intensity_alignment": 0.89
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.12). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "4086",
+        "title": "Lost in Despair - Volume 81",
+        "author": "Matthew Thomas, Robert Garcia",
+        "genres": [
+          "Fantasy"
+        ],
+        "score": 0.9192,
+        "score_components": {
+          "mood_similarity": 0.9175,
+          "sentiment_alignment": 0.9408,
+          "intensity_alignment": 0.89
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.12). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8542",
+        "title": "Celebrating Life - Volume 69",
+        "author": "Matthew Thomas, Michelle Lewis, Kimberly Hill",
+        "genres": [
+          "Fantasy"
+        ],
+        "score": 0.9156,
+        "score_components": {
+          "mood_similarity": 0.9224,
+          "sentiment_alignment": 0.9034,
+          "intensity_alignment": 0.9085
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.19). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7433",
+        "title": "Serene Landscapes - Volume 44",
+        "author": "Matthew Thomas",
+        "genres": [
+          "Fantasy"
+        ],
+        "score": 0.9156,
+        "score_components": {
+          "mood_similarity": 0.9224,
+          "sentiment_alignment": 0.9034,
+          "intensity_alignment": 0.9085
+        },
+        "explanation": "Mood overlap on Adventurous, Excited. Sentiment is close to yours (delta 0.19). Emotional intensity aligns with your current level."
+      }
+    ]
+  },
+  {
+    "input_mood": "Dark and suspenseful",
+    "inferred_mood": {
+      "dominant_mood": "Dark",
+      "sentiment_score": -0.0699,
+      "emotional_intensity": 0.35,
+      "mood_scores": {
+        "Happy": 0.05,
+        "Sad": 0.05,
+        "Dark": 0.25,
+        "Calm": 0.05,
+        "Excited": 0.05,
+        "Angry": 0.05,
+        "Fearful": 0.05,
+        "Hopeful": 0.05,
+        "Romantic": 0.05,
+        "Humorous": 0.05,
+        "Motivational": 0.05,
+        "Relaxed": 0.05,
+        "Thrilling": 0.05,
+        "Mysterious": 0.05,
+        "Reflective": 0.05,
+        "Adventurous": 0.05
+      }
+    },
+    "recommendations": [
+      {
+        "book_id": "4525",
+        "title": "The Joy of Discovery - Volume 91",
+        "author": "William Walker, Jennifer Carter",
+        "genres": [
+          "Horror",
+          "Fantasy"
+        ],
+        "score": 0.8528,
+        "score_components": {
+          "mood_similarity": 0.7815,
+          "sentiment_alignment": 0.9793,
+          "intensity_alignment": 0.9272
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.04). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8582",
+        "title": "Love and Laughter - Volume 70",
+        "author": "Angela Green",
+        "genres": [
+          "Horror",
+          "Children's Literature"
+        ],
+        "score": 0.8478,
+        "score_components": {
+          "mood_similarity": 0.7717,
+          "sentiment_alignment": 0.9669,
+          "intensity_alignment": 0.9539
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.07). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1771",
+        "title": "Inspiring Journeys - Volume 29",
+        "author": "Steven Adams, Jennifer Carter",
+        "genres": [
+          "Biography",
+          "Horror"
+        ],
+        "score": 0.8472,
+        "score_components": {
+          "mood_similarity": 0.7738,
+          "sentiment_alignment": 0.9743,
+          "intensity_alignment": 0.9294
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.05). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1170",
+        "title": "Optimistic Futures - Volume 15",
+        "author": "Rebecca Young, Jennifer Carter",
+        "genres": [
+          "Horror",
+          "Travel"
+        ],
+        "score": 0.8461,
+        "score_components": {
+          "mood_similarity": 0.7778,
+          "sentiment_alignment": 0.9612,
+          "intensity_alignment": 0.9272
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.08). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1841",
+        "title": "Discordant Notes - Volume 30",
+        "author": "Laura Wright",
+        "genres": [
+          "Horror",
+          "Fantasy"
+        ],
+        "score": 0.8419,
+        "score_components": {
+          "mood_similarity": 0.7748,
+          "sentiment_alignment": 0.9477,
+          "intensity_alignment": 0.9343
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3607",
+        "title": "Crushing Defeats - Volume 70",
+        "author": "Emily Johnson, Matthew Thomas",
+        "genres": [
+          "Horror",
+          "Fantasy"
+        ],
+        "score": 0.8419,
+        "score_components": {
+          "mood_similarity": 0.7748,
+          "sentiment_alignment": 0.9477,
+          "intensity_alignment": 0.9343
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "2404",
+        "title": "Enlightening Paths - Volume 43",
+        "author": "Mark Scott",
+        "genres": [
+          "Horror",
+          "Travel"
+        ],
+        "score": 0.8397,
+        "score_components": {
+          "mood_similarity": 0.7711,
+          "sentiment_alignment": 0.9477,
+          "intensity_alignment": 0.9343
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "4987",
+        "title": "Humiliating Failures - Volume 102",
+        "author": "Ashley Harris, Joseph Allen, Rebecca Young",
+        "genres": [
+          "Horror",
+          "Travel"
+        ],
+        "score": 0.8397,
+        "score_components": {
+          "mood_similarity": 0.7711,
+          "sentiment_alignment": 0.9477,
+          "intensity_alignment": 0.9343
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "5928",
+        "title": "The Depths of Sorrow - Volume 9",
+        "author": "Kevin Nelson",
+        "genres": [
+          "Horror",
+          "Health"
+        ],
+        "score": 0.8392,
+        "score_components": {
+          "mood_similarity": 0.7934,
+          "sentiment_alignment": 0.8683,
+          "intensity_alignment": 0.9738
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is more subdued, matching a softer tone. Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "2475",
+        "title": "Inspiring Journeys - Volume 45",
+        "author": "Mark Scott",
+        "genres": [
+          "Fiction",
+          "Horror"
+        ],
+        "score": 0.8385,
+        "score_components": {
+          "mood_similarity": 0.7945,
+          "sentiment_alignment": 0.8744,
+          "intensity_alignment": 0.9549
+        },
+        "explanation": "Mood overlap on Dark. Sentiment is more subdued, matching a softer tone. Emotional intensity aligns with your current level."
+      }
+    ]
+  },
+  {
+    "input_mood": "Romantic and uplifting",
+    "inferred_mood": {
+      "dominant_mood": "Happy",
+      "sentiment_score": 0.5154,
+      "emotional_intensity": 0.35,
+      "mood_scores": {
+        "Happy": 0.25,
+        "Sad": 0.05,
+        "Dark": 0.05,
+        "Calm": 0.05,
+        "Excited": 0.05,
+        "Angry": 0.05,
+        "Fearful": 0.05,
+        "Hopeful": 0.05,
+        "Romantic": 0.05,
+        "Humorous": 0.05,
+        "Motivational": 0.05,
+        "Relaxed": 0.05,
+        "Thrilling": 0.05,
+        "Mysterious": 0.05,
+        "Reflective": 0.05,
+        "Adventurous": 0.05
+      }
+    },
+    "recommendations": [
+      {
+        "book_id": "2864",
+        "title": "Confusing Times - Volume 53",
+        "author": "Sarah Davis, Kevin Nelson, Lisa Perez",
+        "genres": [
+          "Fiction",
+          "Children's Literature"
+        ],
+        "score": 0.8809,
+        "score_components": {
+          "mood_similarity": 0.8451,
+          "sentiment_alignment": 0.971,
+          "intensity_alignment": 0.8738
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8108",
+        "title": "Glorious Achievements - Volume 59",
+        "author": "Michael Brown, Michelle Lewis, Amy Turner",
+        "genres": [
+          "Fiction",
+          "Children's Literature"
+        ],
+        "score": 0.8809,
+        "score_components": {
+          "mood_similarity": 0.8451,
+          "sentiment_alignment": 0.971,
+          "intensity_alignment": 0.8738
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "4736",
+        "title": "Brilliant Ideas - Volume 96",
+        "author": "Daniel White, Robert Garcia",
+        "genres": [
+          "Fiction",
+          "Children's Literature"
+        ],
+        "score": 0.8809,
+        "score_components": {
+          "mood_similarity": 0.8451,
+          "sentiment_alignment": 0.971,
+          "intensity_alignment": 0.8738
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.06). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7723",
+        "title": "Celebrating Life - Volume 50",
+        "author": "Matthew Thomas, William Walker, Stephanie Hall",
+        "genres": [
+          "Technology",
+          "Children's Literature"
+        ],
+        "score": 0.8735,
+        "score_components": {
+          "mood_similarity": 0.8213,
+          "sentiment_alignment": 0.9491,
+          "intensity_alignment": 0.9561
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "7466",
+        "title": "The Depths of Sorrow - Volume 44",
+        "author": "Christopher Anderson, Kimberly Hill, Lisa Perez",
+        "genres": [
+          "Children's Literature"
+        ],
+        "score": 0.8715,
+        "score_components": {
+          "mood_similarity": 0.8107,
+          "sentiment_alignment": 0.9867,
+          "intensity_alignment": 0.9231
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.03). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1829",
+        "title": "Tender Moments - Volume 30",
+        "author": "Kevin Nelson",
+        "genres": [
+          "Technology",
+          "Children's Literature"
+        ],
+        "score": 0.865,
+        "score_components": {
+          "mood_similarity": 0.8052,
+          "sentiment_alignment": 0.9491,
+          "intensity_alignment": 0.9638
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.10). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "8270",
+        "title": "Foolish Mistakes - Volume 63",
+        "author": "Sarah Davis, Jennifer Carter, Ryan Mitchell",
+        "genres": [
+          "Technology",
+          "Children's Literature"
+        ],
+        "score": 0.8625,
+        "score_components": {
+          "mood_similarity": 0.7947,
+          "sentiment_alignment": 0.9542,
+          "intensity_alignment": 0.9807
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.09). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "924",
+        "title": "Eternal Darkness - Volume 9",
+        "author": "Jason Roberts",
+        "genres": [
+          "Fiction",
+          "Children's Literature"
+        ],
+        "score": 0.8623,
+        "score_components": {
+          "mood_similarity": 0.8859,
+          "sentiment_alignment": 0.7577,
+          "intensity_alignment": 0.9422
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is more positive, offering a lift. Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3249",
+        "title": "Dark Shadows - Volume 62",
+        "author": "Sarah Davis, Kevin Nelson",
+        "genres": [
+          "Children's Literature"
+        ],
+        "score": 0.8605,
+        "score_components": {
+          "mood_similarity": 0.804,
+          "sentiment_alignment": 0.942,
+          "intensity_alignment": 0.9507
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is close to yours (delta 0.12). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "3032",
+        "title": "Inspiring Journeys - Volume 57",
+        "author": "William Walker",
+        "genres": [
+          "Children's Literature"
+        ],
+        "score": 0.8579,
+        "score_components": {
+          "mood_similarity": 0.8208,
+          "sentiment_alignment": 0.8914,
+          "intensity_alignment": 0.9507
+        },
+        "explanation": "Mood overlap on Happy. Sentiment is more positive, offering a lift. Emotional intensity aligns with your current level."
+      }
+    ]
+  },
+  {
+    "input_mood": "Reflective and thoughtful",
+    "inferred_mood": {
+      "dominant_mood": "Reflective",
+      "sentiment_score": 0.2055,
+      "emotional_intensity": 0.5409,
+      "mood_scores": {
+        "Happy": 0.0417,
+        "Sad": 0.0417,
+        "Dark": 0.0417,
+        "Calm": 0.0417,
+        "Excited": 0.0417,
+        "Angry": 0.0417,
+        "Fearful": 0.0417,
+        "Hopeful": 0.0417,
+        "Romantic": 0.0417,
+        "Humorous": 0.0417,
+        "Motivational": 0.0417,
+        "Relaxed": 0.0417,
+        "Thrilling": 0.0417,
+        "Mysterious": 0.0417,
+        "Reflective": 0.3745,
+        "Adventurous": 0.0417
+      }
+    },
+    "recommendations": [
+      {
+        "book_id": "8173",
+        "title": "Devastating Losses - Volume 61",
+        "author": "Robert Garcia, William Walker",
+        "genres": [
+          "Fiction",
+          "Philosophy"
+        ],
+        "score": 0.9326,
+        "score_components": {
+          "mood_similarity": 0.9137,
+          "sentiment_alignment": 0.987,
+          "intensity_alignment": 0.9177
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.03). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "5474",
+        "title": "Tragic Endings - Volume 113",
+        "author": "Lauren Jackson, Stephanie Hall, Jason Roberts",
+        "genres": [
+          "Philosophy",
+          "Technology"
+        ],
+        "score": 0.9298,
+        "score_components": {
+          "mood_similarity": 0.9164,
+          "sentiment_alignment": 0.9911,
+          "intensity_alignment": 0.8809
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.02). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "5509",
+        "title": "Inspiring Journeys - Volume 114",
+        "author": "Laura Wright, Kevin Nelson, Ryan Mitchell",
+        "genres": [
+          "Drama",
+          "Philosophy"
+        ],
+        "score": 0.9296,
+        "score_components": {
+          "mood_similarity": 0.906,
+          "sentiment_alignment": 0.9901,
+          "intensity_alignment": 0.9232
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.02). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6412",
+        "title": "Hope Springs Eternal - Volume 20",
+        "author": "Charles King",
+        "genres": [
+          "Drama",
+          "Philosophy"
+        ],
+        "score": 0.9254,
+        "score_components": {
+          "mood_similarity": 0.9023,
+          "sentiment_alignment": 0.9951,
+          "intensity_alignment": 0.9018
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.01). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6300",
+        "title": "Fear and Loathing - Volume 18",
+        "author": "Lauren Jackson, Nicole Thompson, Lisa Perez",
+        "genres": [
+          "Fiction",
+          "Philosophy"
+        ],
+        "score": 0.9248,
+        "score_components": {
+          "mood_similarity": 0.9175,
+          "sentiment_alignment": 0.9326,
+          "intensity_alignment": 0.9411
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.13). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "2028",
+        "title": "Love and Laughter - Volume 34",
+        "author": "Michelle Lewis",
+        "genres": [
+          "Fiction",
+          "Philosophy"
+        ],
+        "score": 0.9216,
+        "score_components": {
+          "mood_similarity": 0.9175,
+          "sentiment_alignment": 0.9198,
+          "intensity_alignment": 0.9411
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.16). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "1305",
+        "title": "Tearful Goodbyes - Volume 18",
+        "author": "Jessica Martinez, Stephanie Hall, Thomas Lopez",
+        "genres": [
+          "Philosophy"
+        ],
+        "score": 0.9166,
+        "score_components": {
+          "mood_similarity": 0.8959,
+          "sentiment_alignment": 0.9745,
+          "intensity_alignment": 0.9034
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.05). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6141",
+        "title": "Devastating Losses - Volume 14",
+        "author": "Ashley Harris",
+        "genres": [
+          "Fiction",
+          "History"
+        ],
+        "score": 0.9163,
+        "score_components": {
+          "mood_similarity": 0.8784,
+          "sentiment_alignment": 0.9987,
+          "intensity_alignment": 0.9308
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.00). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "577",
+        "title": "Pessimistic Views - Volume 2",
+        "author": "Michael Brown, Steven Adams",
+        "genres": [
+          "Fiction",
+          "History"
+        ],
+        "score": 0.9163,
+        "score_components": {
+          "mood_similarity": 0.8784,
+          "sentiment_alignment": 0.9987,
+          "intensity_alignment": 0.9308
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.00). Emotional intensity aligns with your current level."
+      },
+      {
+        "book_id": "6292",
+        "title": "Chaos Unleashed - Volume 18",
+        "author": "William Walker, Kevin Nelson",
+        "genres": [
+          "Fiction",
+          "History"
+        ],
+        "score": 0.9163,
+        "score_components": {
+          "mood_similarity": 0.8784,
+          "sentiment_alignment": 0.9987,
+          "intensity_alignment": 0.9308
+        },
+        "explanation": "Mood overlap on Reflective. Sentiment is close to yours (delta 0.00). Emotional intensity aligns with your current level."
+      }
+    ]
+  }
+]

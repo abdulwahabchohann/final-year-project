@@ -1,0 +1,18 @@
+# Django Core
+Django>=4.2,<5.0
+
+# Django REST Framework
+djangorestframework>=3.14.0
+
+# Django Allauth (Google OAuth)
+django-allauth>=0.57.0
+
+# Environment Variables (optional but recommended)
+python-dotenv>=1.0.0
+
+# NLP and Sentiment Analysis
+transformers>=4.30.0
+sentence-transformers>=2.2.0
+torch>=2.0.0
+numpy>=1.24.0
+

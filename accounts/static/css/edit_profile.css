@@ -1,0 +1,137 @@
+/* ================================
+   PAGE LAYOUT
+=================================== */
+.profile-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f6ff;
+    padding: 20px;
+    font-family: "Inter", sans-serif;
+}
+
+/* ================================
+   CARD
+=================================== */
+.form-container {
+    background: white;
+    padding: 32px 28px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* ================================
+   HEADING
+=================================== */
+.form-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2f2f44;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.form-container h1 i {
+    color: #6c63ff;
+}
+
+/* ================================
+   FORM STYLING
+=================================== */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.profile-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d5d5e5;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: #fafafa;
+    transition: all 0.2s ease;
+}
+
+.profile-form input:focus {
+    outline: none;
+    background: white;
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25);
+}
+
+/* Two input row */
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* ================================
+   BUTTONS
+=================================== */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Primary Button */
+.btn-primary {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    transition: 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #5a54e6;
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background: #e8e8ef;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d6d6e0;
+}
+
+/* ================================
+   RESPONSIVE
+=================================== */
+@media (max-width: 640px) {
+    .form-row {
+        flex-direction: column;
+    }
+}

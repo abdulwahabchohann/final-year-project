@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} - ReadWise{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="book-detail">
+    <div class="book-detail__media">
+        {% if cover_image %}
+            <img src="{{ cover_image }}" alt="Cover for {{ title }}">
+        {% else %}
+            <div class="book-card__placeholder">{{ title|slice:":1" }}</div>
+        {% endif %}
+    </div>
+    <div class="book-detail__body">
+        <h1>{{ title }}</h1>
+        {% if authors %}
+            <p class="book-detail__meta">By {{ authors|join:", " }}</p>
+        {% endif %}
+        <p class="book-detail__description">
+            {{ description|default:"No description available." }}
+        </p>
+    </div>
+</section>
+{% endblock %}

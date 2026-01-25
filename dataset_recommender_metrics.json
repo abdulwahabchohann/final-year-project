@@ -1,0 +1,50 @@
+{
+  "inputs": [
+    {
+      "input_mood": "Hopeful and calm",
+      "recommendation_count": 10,
+      "average_mood_overlap": 0.5194,
+      "average_sentiment_alignment": 0.9722,
+      "average_intensity_alignment": 0.9814
+    },
+    {
+      "input_mood": "Excited adventure",
+      "recommendation_count": 10,
+      "average_mood_overlap": 0.6788,
+      "average_sentiment_alignment": 0.958,
+      "average_intensity_alignment": 0.946
+    },
+    {
+      "input_mood": "Dark and suspenseful",
+      "recommendation_count": 10,
+      "average_mood_overlap": 0.5669,
+      "average_sentiment_alignment": 0.9415,
+      "average_intensity_alignment": 0.9404
+    },
+    {
+      "input_mood": "Romantic and uplifting",
+      "recommendation_count": 10,
+      "average_mood_overlap": 0.5788,
+      "average_sentiment_alignment": 0.9343,
+      "average_intensity_alignment": 0.9289
+    },
+    {
+      "input_mood": "Reflective and thoughtful",
+      "recommendation_count": 10,
+      "average_mood_overlap": 0.6354,
+      "average_sentiment_alignment": 0.9786,
+      "average_intensity_alignment": 0.9202
+    }
+  ],
+  "overall": {
+    "average_mood_overlap": 0.5959,
+    "average_sentiment_alignment": 0.9569,
+    "average_intensity_alignment": 0.9434,
+    "total_recommendations": 50
+  },
+  "notes": {
+    "mood_overlap_definition": "sum over moods of min(user_prob, book_prob)",
+    "sentiment_alignment_definition": "1 - |book_sentiment - user_sentiment| / 2",
+    "intensity_alignment_definition": "1 - |book_intensity - user_intensity|"
+  }
+}

@@ -9,149 +9,35 @@
 
 {% block content %}
 
-<section class="categories-hero">
-    <div class="categories-hero__text">
-        <h2>Browse by Categories</h2>
-        <p>
-            Explore a wide range of topics and find your next favorite read.
-        </p>
-    </div>
-</section>
 
 <section class="categories-module">
     <div class="categories-module__intro">
         <div>
             <h3>Explore Genres</h3>
             <p>
-                Pick a category that matches your interest - from self-growth and
-                business to technology, religion, and fiction.
+                Pick a category that matches your interest - from self-help and
+                time management to psychology, business, finance, technology, and leadership.
             </p>
         </div>
     </div>
 
-    <!-- STATIC CATEGORY GRID (Tumhari list) -->
     <div class="categories-grid">
-
-        <!-- 1. Self-Improvement -->
-        <a href="{% url 'category_detail' 'self-improvement' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Self-Improvement</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 2. Business & Entrepreneurship -->
-        <a href="{% url 'category_detail' 'business-entrepreneurship' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Business &amp; Entrepreneurship</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 3. Finance & Investing -->
-        <a href="{% url 'category_detail' 'finance-investing' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Finance &amp; Investing</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 4. Technology & Programming -->
-        <a href="{% url 'category_detail' 'technology-programming' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Technology &amp; Programming</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 5. Data Science & AI -->
-        <a href="{% url 'category_detail' 'data-science-ai' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Data Science &amp; AI</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 6. Psychology & Human Behavior -->
-        <a href="{% url 'category_detail' 'psychology-human-behavior' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Psychology &amp; Human Behavior</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 7. Leadership & Management -->
-        <a href="{% url 'category_detail' 'leadership-management' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Leadership &amp; Management</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 8. Productivity & Time Management -->
-        <a href="{% url 'category_detail' 'productivity-time-management' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Productivity &amp; Time Management</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 9. Career & Job Preparation -->
-        <a href="{% url 'category_detail' 'career-job-preparation' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Career &amp; Job Preparation</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 10. Education & Academic -->
-        <a href="{% url 'category_detail' 'education-academic' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Education &amp; Academic</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 11. Health & Wellness -->
-        <a href="{% url 'category_detail' 'health-wellness' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Health &amp; Wellness</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 12. Communication & Soft Skills -->
-        <a href="{% url 'category_detail' 'communication-soft-skills' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Communication &amp; Soft Skills</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 13. Philosophy & Critical Thinking -->
-        <a href="{% url 'category_detail' 'philosophy-critical-thinking' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Philosophy &amp; Critical Thinking</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 14. Religion & Spirituality -->
-        <a href="{% url 'category_detail' 'religion-spirituality' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Religion &amp; Spirituality</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
-        <!-- 15. Fiction -->
-        <a href="{% url 'category_detail' 'fiction' %}" class="category-card">
-            <div class="category-card__body">
-                <h3 class="category-card__title">Fiction</h3>
-                <p class="category-card__subtitle">Browse titles</p>
-            </div>
-        </a>
-
+        {% for category in categories %}
+            <a href="{% url 'category_detail' category.slug %}"
+               class="category-card"
+               style="--category-gradient: {{ category.gradient }};">
+                <div class="category-card__body">
+                    <h3 class="category-card__title">{{ category.name }}</h3>
+                    <p class="category-card__subtitle">
+                        {% if category.book_count %}
+                            {{ category.book_count }} book{{ category.book_count|pluralize }}
+                        {% else %}
+                            Browse titles
+                        {% endif %}
+                    </p>
+                </div>
+            </a>
+        {% endfor %}
     </div>
 </section>
 
