@@ -1,0 +1,40 @@
+databases:
+  - name: final-year-project-db
+    databaseName: final_year_project
+    user: final_year_project_user
+    plan: free
+
+services:
+  - type: web
+    name: final-year-project
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate
+    startCommand: gunicorn readwise.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: IS_PRODUCTION
+        value: "True"
+      - key: ALLOWED_HOSTS
+        value: your-service-name.onrender.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://your-service-name.onrender.com
+      - key: SITE_BASE_URL
+        value: https://your-service-name.onrender.com
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        value: https://your-service-name.onrender.com/accounts/oauth2callback/
+      - key: GOOGLE_BOOKS_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: final-year-project-db
+          property: connectionString
