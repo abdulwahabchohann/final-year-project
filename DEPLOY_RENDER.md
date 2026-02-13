@@ -46,7 +46,7 @@ python manage.py loaddata data/prod_seed.json
 Update Django Sites record for OAuth:
 
 ```powershell
-python manage.py shell -c "from django.contrib.sites.models import Site; Site.objects.update_or_create(id=1, defaults={'domain':'<service>.onrender.com','name':'final-year-project'})"
+python manage.py shell -c "from django.contrib.sites.models import Site; Site.objects.update_or_create(id=1, defaults={'domain':'<service>.onrender.com','name':'readwise'})"
 ```
 
 Validate key model counts:

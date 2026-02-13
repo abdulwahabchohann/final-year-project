@@ -1,12 +1,12 @@
 databases:
-  - name: final-year-project-db
-    databaseName: final_year_project
-    user: final_year_project_user
+  - name: readwise-db
+    databaseName: readwise
+    user: readwise_user
     plan: free
 
 services:
   - type: web
-    name: final-year-project
+    name: readwise
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
@@ -36,5 +36,5 @@ services:
         sync: false
       - key: DATABASE_URL
         fromDatabase:
-          name: final-year-project-db
+          name: readwise-db
           property: connectionString
