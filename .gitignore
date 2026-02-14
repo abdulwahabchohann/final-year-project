@@ -51,4 +51,5 @@ Thumbs.db
 # Project specific
 *.sqlite
 *.sqlite3
+data/pythonanywhere_seed.json
 
