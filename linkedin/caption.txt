@@ -1,0 +1,19 @@
+Built and deployed **ReadWise**: a mood-based book recommendation web app.
+
+Users describe how they feel, and the system returns personalized books with explainable match reasons.
+
+What I built:
+- Mood-aware recommendation flow (text mood input -> ranked book matches)
+- Book discovery from Google Books + Open Library
+- Full web app with auth, profile management, and REST endpoints
+- Production deployment on Render
+
+Tech stack:
+Python, Django, Django REST Framework, JavaScript, SQLite/PostgreSQL-ready, Google OAuth, Render
+
+If you're in **US, Canada, or Dubai** and need a custom web app or recommendation engine, let's connect.
+
+Live demo: [YOUR_RENDER_URL]
+GitHub: https://github.com/abdulwahabchohann/final-year-project
+
+#Django #Python #WebDevelopment #MachineLearning #RecommendationSystem #FreelanceDeveloper #SoftwareEngineer

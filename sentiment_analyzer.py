@@ -8,7 +8,6 @@ import json
 import numpy as np
 from typing import List, Dict, Tuple, Optional
 from collections import defaultdict
-import pickle
 
 # Check if transformers is available
 try:
@@ -58,8 +57,9 @@ class EmotionAnalyzer:
                 "text-classification",
                 model=self.model_name,
                 top_k=None,
-                device=0 if torch.cuda.is_available() else -1
+                device=0 if torch.cuda.is_available() else -1  # keep for pipeline
             )
+            # TODO: upgrade to device_map='auto' when using AutoModel directly
             print("✓ Model loaded successfully")
         except Exception as e:
             print(f"Warning: Could not load model {self.model_name}: {e}")
@@ -127,31 +127,31 @@ class EmotionAnalyzer:
         
         # Joy keywords
         joy_words = ['happy', 'joy', 'delightful', 'wonderful', 'amazing', 'great', 'excellent', 'fun', 'cheerful']
-        emotions['joy'] = sum(1 for word in joy_words if word in text_lower) * 0.2
+        emotions['joy'] = min(sum(1 for word in joy_words if word in text_lower) * 0.15, 1.0)
         
         # Sadness keywords
         sad_words = ['sad', 'depressing', 'melancholy', 'tragic', 'sorrow', 'grief', 'loss']
-        emotions['sadness'] = sum(1 for word in sad_words if word in text_lower) * 0.2
+        emotions['sadness'] = min(sum(1 for word in sad_words if word in text_lower) * 0.15, 1.0)
         
         # Anger keywords
         anger_words = ['angry', 'rage', 'fury', 'hostile', 'violent', 'conflict']
-        emotions['anger'] = sum(1 for word in anger_words if word in text_lower) * 0.2
+        emotions['anger'] = min(sum(1 for word in anger_words if word in text_lower) * 0.15, 1.0)
         
         # Fear keywords
         fear_words = ['fear', 'scary', 'terror', 'horror', 'frightening', 'suspense', 'thriller']
-        emotions['fear'] = sum(1 for word in fear_words if word in text_lower) * 0.2
+        emotions['fear'] = min(sum(1 for word in fear_words if word in text_lower) * 0.15, 1.0)
         
         # Love keywords
         love_words = ['love', 'romance', 'romantic', 'passion', 'affection', 'heart']
-        emotions['love'] = sum(1 for word in love_words if word in text_lower) * 0.2
+        emotions['love'] = min(sum(1 for word in love_words if word in text_lower) * 0.15, 1.0)
         
         # Optimism keywords
         optimism_words = ['hope', 'optimis', 'inspiring', 'uplifting', 'positive', 'bright']
-        emotions['optimism'] = sum(1 for word in optimism_words if word in text_lower) * 0.2
+        emotions['optimism'] = min(sum(1 for word in optimism_words if word in text_lower) * 0.15, 1.0)
         
         # Calm keywords
         calm_words = ['calm', 'peaceful', 'serene', 'tranquil', 'relaxing', 'quiet', 'gentle']
-        emotions['calm'] = sum(1 for word in calm_words if word in text_lower) * 0.2
+        emotions['calm'] = min(sum(1 for word in calm_words if word in text_lower) * 0.15, 1.0)
         
         # Normalize scores
         total = sum(emotions.values())
@@ -418,7 +418,7 @@ class ExplainabilityEngine:
 class RecommendationEngine:
     """Main recommendation engine - combines all components"""
     
-    def __init__(self, cache_file: str = "sentiment_cache.pkl"):
+    def __init__(self, cache_file: str = "sentiment_cache.json"):
         """
         Initialize recommendation engine
         
@@ -435,8 +435,10 @@ class RecommendationEngine:
         """Load previously analyzed books from cache"""
         if os.path.exists(self.cache_file):
             try:
-                with open(self.cache_file, 'rb') as f:
-                    return pickle.load(f)
+                with open(self.cache_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        return data
             except Exception as e:
                 print(f"Warning: Could not load cache: {e}")
         return {}
@@ -444,8 +446,13 @@ class RecommendationEngine:
     def _save_cache(self):
         """Save analyzed books to cache"""
         try:
-            with open(self.cache_file, 'wb') as f:
-                pickle.dump(self.sentiment_cache, f)
+            # Ensure the cache is JSON-serializable (e.g., numpy float types).
+            safe_cache: Dict[str, Dict[str, float]] = {}
+            for book_id, emotions in self.sentiment_cache.items():
+                safe_cache[str(book_id)] = {emotion: float(score) for emotion, score in emotions.items()}
+
+            with open(self.cache_file, 'w', encoding='utf-8') as f:
+                json.dump(safe_cache, f)
         except Exception as e:
             print(f"Warning: Could not save cache: {e}")
     
@@ -460,10 +467,11 @@ class RecommendationEngine:
             Emotion scores dictionary
         """
         book_id = book.get('book_id')
+        book_id_key = str(book_id) if book_id is not None else None
         
         # Check cache
-        if book_id and book_id in self.sentiment_cache:
-            return self.sentiment_cache[book_id]
+        if book_id_key and book_id_key in self.sentiment_cache:
+            return self.sentiment_cache[book_id_key]
         
         # Extract and analyze text
         text = BookProcessor.extract_text(book)
@@ -472,8 +480,8 @@ class RecommendationEngine:
         emotions = self.emotion_analyzer.analyze_text(text)
         
         # Cache result
-        if book_id:
-            self.sentiment_cache[book_id] = emotions
+        if book_id_key:
+            self.sentiment_cache[book_id_key] = emotions
         
         return emotions
     
@@ -587,8 +595,13 @@ def recommend_books_by_mood(mood: str, dataset_path: str, top_k: int = 5) -> Lis
         List of recommended books
     """
     # Load dataset
-    with open(dataset_path, 'r', encoding='utf-8') as f:
-        books = json.load(f)
+    try:
+        with open(dataset_path, 'r', encoding='utf-8') as f:
+            books = json.load(f)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(
+            f"Books dataset not found at '{dataset_path}'. Ensure the path is correct and the JSON file exists."
+        ) from e
     
     # Get recommendations
     engine = RecommendationEngine()
